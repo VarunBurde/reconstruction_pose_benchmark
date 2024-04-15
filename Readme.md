@@ -1,6 +1,6 @@
 # Dataset instruction
 
-![6dpose.png](webpage_content%2F6dpose.png)
+![setup.png](webpage_content%2Fsetup.png)
 
 ## Image Dataset
 The dataset consists of images of the updated 21 YCB-V objects captured using a robotic manipulator Kuka IIWA 14 with a 
