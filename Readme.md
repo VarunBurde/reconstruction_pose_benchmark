@@ -5,7 +5,7 @@
 ## Image Dataset
 The dataset consists of images of the updated 21 YCB-V objects captured using a robotic manipulator Kuka IIWA 14 with a 
 Baysler camera with 2K resolution. The poses are calculated from the kinematic chain of the robot and the camera 
-calibrated with hand-eye configuration.  
+calibrated with hand-eye configuration. 
 
 The directory structure of the images is as follows. 
 <pre>├── Object
@@ -34,9 +34,11 @@ The directory structure of the images is as follows.
 Each dataset pose has been post-processed to fit inside a unit cube to facilitate the Nerf-based reconstruction and used 
 Nerfstudio Parser as described [here](https://docs.nerf.studio/reference/api/data/dataparsers.html). The JSON files consist 
 of a subset of images used for the benchmark. All images are undistorted according to the estimated distortion parameters.
-Subset of images are in range of 3, 5, 10, 15, 20, 25, 50, 75, 100, 150, 300, and all images. Intrinsics paramerters are 
-also provided in the JSON files. The poses can be converted into meter scale by mulipyling the poses with with parmaeter 
-"real_world_scale" in the JSON file.
+The subset of images are in the range of 3, 5, 10, 15, 20, 25, 50, 75, 100, 150, 300, and all images. Intrinsic parameters are 
+also provided in the JSON files. The poses can be converted into meter scale by multiplying the poses with with parameter 
+"real_world_scale" in the JSON file. All camera poses are aligned with the BOP dataset mesh world frame which means the 
+reconstructed mesh such be roughly in the same world frame as meshes specified 
+[here](https://huggingface.co/datasets/bop-benchmark/datasets/resolve/main/ycbv/ycbv_models.zip)
 
 ## Downloading the dataset 
 
