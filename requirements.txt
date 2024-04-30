@@ -1,5 +1,4 @@
 numpy
 opencv-python
 tqdm
-jupyter
 scipy

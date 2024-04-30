@@ -100,6 +100,7 @@ wget https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationRecon
 ```
 
 We provide the sample script to convert the Nerf data to COLMAP and BOP format. It can be found under scripts
-
-nerf_to_bop.py
-nerf_to_colmap.py
+```bash
+python3 nerf_to_bop.py --dataset_dir path/to/direactory
+python3 nerf_to_colmap.py --dataset_dir path/to/direactory
+```
