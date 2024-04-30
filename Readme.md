@@ -92,8 +92,7 @@ The directory structure of the meshes is as follows.
 </pre>
 
 Each meshes are in either .obj or .ply format. Directory may consist of meshes with Texture file or either color already 
-embedded in the mesh vertices. Each meshes are scaled, cropped and aligned to fit the GT meshes from YCB-V dataset. 
-The alignement is done using the ICP algorithm from the Open3D library. 
+embedded in the mesh vertices. Each meshes are scaled, cropped and aligned to fit the GT meshes from YCB-V dataset.
 
 To download the mesh dataset, the following command can be used:
 
