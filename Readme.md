@@ -46,7 +46,7 @@ To download each object, wget or other similar command can be used. For example,
 the following command can be used:
 
 ```bash
-wget https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Bop_images/19_large_clamp/
+wget https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/19_large_clamp.zip
 ```
 
 ## Mesh Dataset
@@ -94,6 +94,7 @@ embedded in the mesh vertices. Each meshes are scaled, cropped and aligned to fi
 The alignement is done using the ICP algorithm from the Open3D library. 
 
 To download the mesh dataset, the following command can be used:
+
 
 ```bash
 wget https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/reconstructed_meshes/"object_subset.zip"
