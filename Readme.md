@@ -35,7 +35,8 @@ Each dataset pose has been post-processed to fit inside a unit cube to facilitat
 Nerfstudio Parser as described [here](https://docs.nerf.studio/reference/api/data/dataparsers.html). The JSON files consist 
 of a subset of images used for the benchmark. All images are undistorted according to the estimated distortion parameters.
 Subset of images are in range of 3, 5, 10, 15, 20, 25, 50, 75, 100, 150, 300, and all images. Intrinsics paramerters are 
-also provided in the JSON files.
+also provided in the JSON files. The poses can be converted into meter scale by mulipyling the poses with with parmaeter 
+"real_world_scale" in the JSON file.
 
 ## Downloading the dataset 
 
@@ -98,3 +99,7 @@ To download the mesh dataset, the following command can be used:
 wget https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/reconstructed_meshes/"object_subset.zip"
 ```
 
+We provide the sample script to convert the Nerf data to COLMAP and BOP format. It can be found under scripts
+
+nerf_to_bop.py
+nerf_to_colmap.py

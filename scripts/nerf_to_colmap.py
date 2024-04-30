@@ -222,7 +222,7 @@ def main(dataset_dir):
     # object_name = os.path.basename(dataset_dir)
     # object_id = YCB_data[object_name]
     mask_dir = os.path.join(dataset_dir, 'mask_mesh')
-    transform_json = os.path.join(dataset_dir, 'optimise_pose_transforms_all.json')
+    transform_json = os.path.join(dataset_dir, 'nerf', 'transforms_all.json')
     output_dir = os.path.join(dataset_dir, 'colmap_format')
 
     if os.path.exists(output_dir):
