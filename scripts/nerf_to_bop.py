@@ -9,18 +9,51 @@ import cv2
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
-from scripts.common import (
-    YCB_data,
-    flip_mat,
-    load_intrinsics,
-)
 
+YCB_data = {
+    1: "01_master_chef_can", 2: "02_cracker_box", 3: "03_sugar_box", 4: "04_tomato_soup_can", 5: "05_mustard_bottle",
+    6: "06_tuna_fish_can", 7: "07_pudding_box", 8: "08_gelatin_box", 9: "09_potted_meat_can", 10: "10_banana",
+    11: "11_pitcher_base", 12: "12_bleach_cleanser", 13: "13_bowl", 14: "14_mug", 15: "15_power_drill",
+    16: "16_wood_block", 17: "17_scissors", 18: "18_large_marker", 19: "19_large_clamp", 20: "20_extra_large_clamp",
+    21: "21_foam_brick"
+}
+
+# reverse the dictionary
+YCB_data = {v: k for k, v in YCB_data.items()}
+YCB_data = {k: v for k, v in sorted(YCB_data.items(), key=lambda item: item[1])}
+
+
+def load_intrinsics(transoform_json):
+    fl_x = transoform_json['fl_x']
+    fl_y = transoform_json['fl_y']
+    k1 = transoform_json['k1']
+    k2 = transoform_json['k2']
+    k3 = transoform_json['k3']
+    p1 = transoform_json['p1']
+    p2 = transoform_json['p2']
+    cx = transoform_json['cx']
+    cy = transoform_json['cy']
+    w = transoform_json['w']
+    h = transoform_json['h']
+
+    K = np.array([[fl_x, 0, cx],
+                    [0, fl_y, cy],
+                    [0, 0, 1]])
+    return K, w, h
+
+
+flip_mat = np.array([
+    [1, 0, 0, 0],
+    [0, -1, 0, 0],
+    [0, 0, -1, 0],
+    [0, 0, 0, 1]
+])
 
 def main(dataset_dir):
     object_name = os.path.basename(dataset_dir)
     object_id = YCB_data[object_name]
     mask_dir = os.path.join(dataset_dir, 'mask_mesh')
-    transform_json = os.path.join(dataset_dir, 'nerf', 'transforms_all.json')
+    transform_json = os.path.join(dataset_dir, 'optimise_pose_transforms_all.json')
     output_dir = os.path.join(dataset_dir, 'bop_format')
 
     if os.path.exists(output_dir):
@@ -52,21 +85,24 @@ def main(dataset_dir):
         scene_gt[scene_id] = []
         scene_gt_info[scene_id] = []
 
-        transform_matrix = np.array(frame['transform_matrix'])
+        c2w = np.array(frame['transform_matrix'])
 
         # convert opengl to opencv
-        transform_matrix = np.matmul(transform_matrix, flip_mat) # OK
-        transform_matrix = np.linalg.inv(transform_matrix)
-
-        # to transform from opengl to opencv
-        r = R.from_euler('zyx', [-90,0,-90], degrees=True)
-        transform_matrix[:3, :3] = np.matmul(transform_matrix[:3, :3], np.linalg.inv(r.as_matrix()))
+        c2w = np.matmul(c2w, flip_mat)
 
         # scale scene to real world scale
-        transform_matrix[:3, 3] *= real_scale # cTw
+        c2w[:3, 3] *= real_scale
 
-        cam_R_w2c = transform_matrix[:3, :3]
-        cam_t_w2c = transform_matrix[:3, 3] * 1000
+        # convert scene to w2c
+        w2c = np.linalg.inv(c2w)
+
+        # orient the scene to original orientation
+        r = R.from_euler('zyx', [-90,0,-90], degrees=True)
+        w2c[:3, :3] = np.matmul(w2c[:3, :3], np.linalg.inv(r.as_matrix()))
+
+        # bop dataset translation is in mm
+        cam_R_w2c = w2c[:3, :3]
+        cam_t_w2c = w2c[:3, 3] * 1000
 
         # scene camera json
         scene_camera[scene_id]["cam_K"] = K.tolist()
@@ -133,11 +169,15 @@ if __name__ == '__main__':
                         help='Path to the dataset directory')
     args = parser.parse_args()
     dataset_base = args.dataset_dir
-    #main(dataset_base)
+
+    # to debug one dataset
+    # dataset = os.path.join(dataset_base, '02_cracker_box')
+    # main(dataset)
 
     process = multiprocessing.Pool(len(os.listdir(dataset_base)))
 
     for dataset in os.listdir(dataset_base):
+        print(dataset)
         dataset_dir = os.path.join(dataset_base, dataset)
         process.apply_async(main, args=(dataset_dir,))
     process.close()
