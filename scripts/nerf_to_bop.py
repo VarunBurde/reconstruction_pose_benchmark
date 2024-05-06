@@ -135,9 +135,13 @@ def main(dataset_dir):
             "visib_fract": 1.0
         })
 
+        cam_m2c = np.linalg.inv(c2w)
+        cam_R_m2c = cam_m2c[:3, :3]
+        cam_t_m2c = cam_m2c[:3, 3]
+
         scene_gt[scene_id].append({
-            "cam_R_m2c": cam_R_w2c.flatten().tolist(),
-            "cam_t_m2c": cam_t_w2c.tolist(),
+            "cam_R_m2c": cam_R_m2c.flatten().tolist(),
+            "cam_t_m2c": cam_t_m2c.tolist(),
             "obj_id": object_id
         })
 
