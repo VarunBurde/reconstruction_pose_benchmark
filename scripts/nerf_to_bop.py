@@ -138,7 +138,7 @@ def main(dataset_dir):
             "visib_fract": 1.0
         })
 
-        cam_m2c = np.linalg.inv(c2w)
+        cam_m2c = np.linalg.inv(w2c)
         cam_R_m2c = cam_m2c[:3, :3]
         cam_t_m2c = cam_m2c[:3, 3]
 

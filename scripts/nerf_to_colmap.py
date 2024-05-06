@@ -251,6 +251,9 @@ def write_image_text(transforms, path):
         # scale scene to real world scale
         c2w[:3, 3] *= real_scale
 
+        # use this if you want scene in mm
+        # c2w[:3, 3] *= 1000
+
         # convert scene to w2c
         w2c = np.linalg.inv(c2w)
 
@@ -376,7 +379,6 @@ def edit_database(database_path, transforms):
     img_ids = {}
 
     real_scale = transforms["real_world_scale"]
-    images = {}
     for frame in transforms['frames']:
         file_path = frame['file_path']
         file_name = os.path.basename(file_path)
@@ -391,6 +393,9 @@ def edit_database(database_path, transforms):
 
         # scale scene to real world scale
         c2w[:3, 3] *= real_scale
+
+        # use this if you want scene in mm
+        # c2w[:3, 3] *= 1000
 
         # convert scene to w2c
         w2c = np.linalg.inv(c2w)
