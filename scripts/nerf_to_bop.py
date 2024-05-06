@@ -100,9 +100,12 @@ def main(dataset_dir):
         r = R.from_euler('zyx', [-90,0,-90], degrees=True)
         w2c[:3, :3] = np.matmul(w2c[:3, :3], np.linalg.inv(r.as_matrix()))
 
+
         # bop dataset translation is in mm
+        w2c[:3, 3] *= 1000
+
         cam_R_w2c = w2c[:3, :3]
-        cam_t_w2c = w2c[:3, 3] * 1000
+        cam_t_w2c = w2c[:3, 3]
 
         # scene camera json
         scene_camera[scene_id]["cam_K"] = K.tolist()
