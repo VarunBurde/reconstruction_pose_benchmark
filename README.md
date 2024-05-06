@@ -156,3 +156,40 @@ python3 -m scripts.nerf_to_colmap --dataset_dir <path to object image folder>
 
 python3 -m scripts.nerf_to_bop --dataset_dir <path to object image folder>
 ```
+
+# License
+
+The YCB objects are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).
+
+This dataset is also released under Creative Commons Attribution 4.0 International (CC BY 4.0).
+
+If you use any of the above data in a publication, please consider citing the following papers:
+
+```
+@inproceedings{calli2015ycb,
+  title={The ycb object and model set: Towards common benchmarks for manipulation research},
+  author={Calli, Berk and Singh, Arjun and Walsman, Aaron and Srinivasa, Siddhartha and Abbeel, Pieter and Dollar, Aaron M},
+  booktitle={2015 international conference on advanced robotics (ICAR)},
+  pages={510--517},
+  year={2015},
+  organization={IEEE}
+}
+
+@article{calli2015benchmarking,
+  title={Benchmarking in manipulation research: Using the Yale-CMU-Berkeley object and model set},
+  author={Calli, Berk and Walsman, Aaron and Singh, Arjun and Srinivasa, Siddhartha and Abbeel, Pieter and Dollar, Aaron M},
+  journal={IEEE Robotics \& Automation Magazine},
+  volume={22},
+  number={3},
+  pages={36--52},
+  year={2015},
+  publisher={IEEE}
+}
+
+@inproceedings{xiang2018posecnn,
+    Author = {Xiang, Yu and Schmidt, Tanner and Narayanan, Venkatraman and Fox, Dieter},
+    Title = {PoseCNN: A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes},
+    Journal   = {Robotics: Science and Systems (RSS)},
+    Year = {2018}
+}
+```
