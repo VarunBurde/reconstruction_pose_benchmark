@@ -2,3 +2,5 @@ numpy
 opencv-python
 tqdm
 scipy
+BeautifulSoup4
+requests

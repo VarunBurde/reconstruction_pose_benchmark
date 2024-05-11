@@ -93,16 +93,15 @@ def main(dataset_dir):
         # scale scene to real world scale
         c2w[:3, 3] *= real_scale
 
-        # convert scene to w2c
+        # bop dataset translation is in mm
+        c2w[:3, 3] *= 1000
+
+        # # convert scene to w2c
         w2c = np.linalg.inv(c2w)
 
         # orient the scene to original orientation
         r = R.from_euler('zyx', [-90,0,-90], degrees=True)
         w2c[:3, :3] = np.matmul(w2c[:3, :3], np.linalg.inv(r.as_matrix()))
-
-
-        # bop dataset translation is in mm
-        w2c[:3, 3] *= 1000
 
         cam_R_w2c = w2c[:3, :3]
         cam_t_w2c = w2c[:3, 3]
@@ -138,7 +137,8 @@ def main(dataset_dir):
             "visib_fract": 1.0
         })
 
-        cam_m2c = np.linalg.inv(w2c)
+        cam_m2c = np.linalg.inv(c2w)
+
         cam_R_m2c = cam_m2c[:3, :3]
         cam_t_m2c = cam_m2c[:3, 3]
 
@@ -178,16 +178,16 @@ if __name__ == '__main__':
     dataset_base = args.dataset_dir
 
     # to debug one dataset
-    # dataset = os.path.join(dataset_base, '02_cracker_box')
-    # main(dataset)
+    dataset = os.path.join(dataset_base, '03_sugar_box')
+    main(dataset)
 
-    process = multiprocessing.Pool(len(os.listdir(dataset_base)))
-
-    for dataset in os.listdir(dataset_base):
-        print(dataset)
-        dataset_dir = os.path.join(dataset_base, dataset)
-        process.apply_async(main, args=(dataset_dir,))
-    process.close()
-    process.join()
-
-    print("Done")
+    # process = multiprocessing.Pool(len(os.listdir(dataset_base)))
+    #
+    # for dataset in os.listdir(dataset_base):
+    #     print(dataset)
+    #     dataset_dir = os.path.join(dataset_base, dataset)
+    #     process.apply_async(main, args=(dataset_dir,))
+    # process.close()
+    # process.join()
+    #
+    # print("Done")
