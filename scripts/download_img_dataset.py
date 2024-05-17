@@ -1,10 +1,23 @@
+from bs4 import BeautifulSoup
 import requests
 import subprocess
-import multiprocessing
+import threading
 import os
+import argparse
+
+
+parser = argparse.ArgumentParser(
+    prog='Downloads the files from the given url',
+    description='Downloads the files from the given url')
+parser.add_argument('--dataset_destination', type=str, required=True,
+                    help='Path to the dataset directory')
+args = parser.parse_args()
+
+
 
 url = 'https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/'
 ext = 'zip'
+
 
 def listFD(url, ext=''):
     page = requests.get(url).text
@@ -15,39 +28,46 @@ def listFD(url, ext=''):
 if __name__ == '__main__':
     files = listFD(url, ext)
 
-    process = multiprocessing.Pool(len(files))
+    dataset_destination = args.dataset_destination
+
+    threads = []
 
     for file in files:
-        # get basename of the file
         file_name = file.split('/')[-1]
         file_name = file_name.split('.')[0]
 
-        # create a directory for the file
-        subprocess.run(['mkdir', file_name])
+        subprocess.run(['mkdir', os.path.join(dataset_destination, file_name)])
 
-        # use multiprocessing to download the files faster
-        process.apply_async(subprocess.run, args=(['wget', file],))
+        # download the file without certificate verification
+        t = threading.Thread(target=subprocess.run, args=(['wget', '-O', os.path.join(dataset_destination, file_name,
+                                                            file_name + '.' + ext), file, '--no-check-certificate'],))
 
-    process.close()
-    process.join()
 
-    process = multiprocessing.Pool(len(files))
+        t.start()
+        threads.append(t)
+
+    for t in threads:
+        t.join()
+
+    threads = []
 
     for file in files:
-        # get basename of the file
         file_name = file.split('/')[-1]
         file_name = file_name.split('.')[0]
 
-        # use subprocess to unzip the files
-        process.apply_async(subprocess.run, args=(['unzip', file.split('/')[-1], '-d', file_name],))
+        t = threading.Thread(target=subprocess.run, args=(['unzip', os.path.join(dataset_destination, file_name,
+                                                                                 file_name + '.' + ext), '-d',
+                                                          os.path.join(dataset_destination, file_name)],))
+        t.start()
+        threads.append(t)
 
-    process.close()
-    process.join()
+    for t in threads:
+        t.join()
 
-    current_dir = os.getcwd()
+    for file in files:
+        file_name = file.split('/')[-1]
+        file_name = file_name.split('.')[0]
+        os.remove(os.path.join(dataset_destination, file_name, file_name + '.' + ext))
 
-    # delete the zip files from current directory
-    for files in os.listdir(current_dir):
-        if files.endswith('.zip'):
-            print("removing file: ", files)
-            os.remove(files)
+    print("Done")
+

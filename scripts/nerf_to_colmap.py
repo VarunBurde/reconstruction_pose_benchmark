@@ -2,13 +2,13 @@ import numpy as np
 import os
 import argparse
 import json
-import multiprocessing
 import collections
 from scipy.spatial.transform import Rotation as R
 import shutil
 import sys
 import sqlite3
 import subprocess
+import threading
 
 parser = argparse.ArgumentParser(
                     prog='Converts the data from nerf format to Colmap format',
@@ -35,6 +35,110 @@ YCB_data = {
 # reverse the dictionary
 YCB_data = {v: k for k, v in YCB_data.items()}
 YCB_data = {k: v for k, v in sorted(YCB_data.items(), key=lambda item: item[1])}
+
+IS_PYTHON3 = sys.version_info[0] >= 3
+MAX_IMAGE_ID = 2 ** 31 - 1
+
+CREATE_CAMERAS_TABLE = """CREATE TABLE IF NOT EXISTS cameras (
+    camera_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    model INTEGER NOT NULL,
+    width INTEGER NOT NULL,
+    height INTEGER NOT NULL,
+    params BLOB,
+    prior_focal_length INTEGER NOT NULL)"""
+
+CREATE_DESCRIPTORS_TABLE = """CREATE TABLE IF NOT EXISTS descriptors (
+    image_id INTEGER PRIMARY KEY NOT NULL,
+    rows INTEGER NOT NULL,
+    cols INTEGER NOT NULL,
+    data BLOB,
+    FOREIGN KEY(image_id) REFERENCES images(image_id) ON DELETE CASCADE)"""
+
+CREATE_IMAGES_TABLE = """CREATE TABLE IF NOT EXISTS images (
+    image_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL UNIQUE,
+    camera_id INTEGER NOT NULL,
+    prior_qw REAL,
+    prior_qx REAL,
+    prior_qy REAL,
+    prior_qz REAL,
+    prior_tx REAL,
+    prior_ty REAL,
+    prior_tz REAL,
+    CONSTRAINT image_id_check CHECK(image_id >= 0 and image_id < {}),
+    FOREIGN KEY(camera_id) REFERENCES cameras(camera_id))
+""".format(
+    MAX_IMAGE_ID
+)
+
+CREATE_TWO_VIEW_GEOMETRIES_TABLE = """
+CREATE TABLE IF NOT EXISTS two_view_geometries (
+    pair_id INTEGER PRIMARY KEY NOT NULL,
+    rows INTEGER NOT NULL,
+    cols INTEGER NOT NULL,
+    data BLOB,
+    config INTEGER NOT NULL,
+    F BLOB,
+    E BLOB,
+    H BLOB,
+    qvec BLOB,
+    tvec BLOB)
+"""
+
+CREATE_KEYPOINTS_TABLE = """CREATE TABLE IF NOT EXISTS keypoints (
+    image_id INTEGER PRIMARY KEY NOT NULL,
+    rows INTEGER NOT NULL,
+    cols INTEGER NOT NULL,
+    data BLOB,
+    FOREIGN KEY(image_id) REFERENCES images(image_id) ON DELETE CASCADE)
+"""
+
+CREATE_MATCHES_TABLE = """CREATE TABLE IF NOT EXISTS matches (
+    pair_id INTEGER PRIMARY KEY NOT NULL,
+    rows INTEGER NOT NULL,
+    cols INTEGER NOT NULL,
+    data BLOB)"""
+
+CREATE_NAME_INDEX = (
+    "CREATE UNIQUE INDEX IF NOT EXISTS index_name ON images(name)"
+)
+
+CREATE_ALL = "; ".join(
+    [
+        CREATE_CAMERAS_TABLE,
+        CREATE_IMAGES_TABLE,
+        CREATE_KEYPOINTS_TABLE,
+        CREATE_DESCRIPTORS_TABLE,
+        CREATE_MATCHES_TABLE,
+        CREATE_TWO_VIEW_GEOMETRIES_TABLE,
+        CREATE_NAME_INDEX,
+    ]
+)
+
+def image_ids_to_pair_id(image_id1, image_id2):
+    if image_id1 > image_id2:
+        image_id1, image_id2 = image_id2, image_id1
+    return image_id1 * MAX_IMAGE_ID + image_id2
+
+
+def pair_id_to_image_ids(pair_id):
+    image_id2 = pair_id % MAX_IMAGE_ID
+    image_id1 = (pair_id - image_id2) / MAX_IMAGE_ID
+    return image_id1, image_id2
+
+
+def array_to_blob(array):
+    if IS_PYTHON3:
+        return array.tostring()
+    else:
+        return np.getbuffer(array)
+
+
+def blob_to_array(blob, dtype, shape=(-1,)):
+    if IS_PYTHON3:
+        return np.fromstring(blob, dtype=dtype).reshape(*shape)
+    else:
+        return np.frombuffer(blob, dtype=dtype).reshape(*shape)
 
 class COLMAPDatabase(sqlite3.Connection):
     @staticmethod
@@ -260,9 +364,9 @@ def write_image_text(transforms, path):
         Rot = w2c[:3, :3]
         T = w2c[:3, 3]
 
-        # to transform from opengl to opencv
-        r = R.from_euler('zyx', [-90, 0,-90], degrees=True)
-        Rot = np.matmul(Rot, np.linalg.inv(r.as_matrix()))
+        # # to transform from opengl to opencv
+        # r = R.from_euler('zyx', [-90, 0,-90], degrees=True)
+        # Rot = np.matmul(Rot, np.linalg.inv(r.as_matrix()))
 
         images[img_id] = Image(id=img_id, camera_id=0, qvec=rotmat2qvec(Rot), tvec=T, name=file_name, xys=[0], point3D_ids=[])
 
@@ -403,10 +507,6 @@ def edit_database(database_path, transforms):
         Rot = w2c[:3, :3]
         T = w2c[:3, 3]
 
-        # to transform from opengl to opencv
-        r = R.from_euler('zyx', [-90, 0, -90], degrees=True)
-        Rot = np.matmul(Rot, np.linalg.inv(r.as_matrix()))
-
         img_ids[img_id] = db.add_image(file_name, camera_id1, prior_q=rotmat2qvec(Rot), prior_t=T)
 
     db.commit()
@@ -450,7 +550,7 @@ def main(dataset_dir):
     # object_id = YCB_data[object_name]
     mask_dir = os.path.join(dataset_dir, 'mask_mesh')
     image_path = os.path.join(dataset_dir, 'undistorted_images')
-    transform_json = os.path.join(dataset_dir, 'optimise_pose_transforms_all.json')
+    transform_json = os.path.join(dataset_dir, 'transforms_all.json')
     output_dir = os.path.join(dataset_dir, 'colmap_format')
     sparse_input_dir = os.path.join(output_dir, 'sparse_input')
     sparse_output_dir = os.path.join(output_dir, 'sparse_output')
@@ -480,17 +580,14 @@ if __name__ == '__main__':
     args = parser.parse_args()
     dataset_base = args.dataset_dir
 
-    # # debug one dataset
-    # dataset = os.path.join(dataset_base, '02_cracker_box')
-    # main(dataset)
-
-    process = multiprocessing.Pool(len(os.listdir(dataset_base)))
-
+    threads = []
     for dataset in os.listdir(dataset_base):
         print(f"Processing {dataset}")
         dataset_dir = os.path.join(dataset_base, dataset)
-        process.apply_async(main, args=(dataset_dir,))
-    process.close()
-    process.join()
+        t = threading.Thread(target=main, args=(dataset_dir,))
+        threads.append(t)
+        t.start()
 
+    for t in threads:
+        t.join()
     print("Done")
