@@ -1,0 +1,224 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "RecPose",
+  "description": "Calibrated Images for 3D Reconstructions for Pose Estimation.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@article{Burde2024Comp, author={Burde, Varun and Benbihi,Assia and Burget, Pavel and Sattler, Torsten},title={{Comparative Evaluation of 3D Reconstruction Methods forObject Pose Estimation}}, year = {2024} }",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://github.com/VarunBurde/reconstruction_pose_benchmark",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "01_master_chef_can.zip",
+      "name": "01_master_chef_can.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/01_master_chef_can.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "5842fa711bc0c32c15f64057e08af117a867ed489247c1012d4f2cf6af4d6538"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "02_cracker_box.zip",
+      "name": "02_cracker_box.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/02_cracker_box.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "6681853d55b9f68e395dec3676781297e56011509a0ff6ca82e3c0843d90a502"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "03_sugar_box.zip",
+      "name": "03_sugar_box.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/03_sugar_box.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "190162cc7799a3437b0a79f419be2647049cff9ef94a6a39efa8d7586af5fc3d"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "04_tomatoe_soup_can.zip",
+      "name": "04_tomatoe_soup_can.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/04_tomatoe_soup_can.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "377c8a4ec5aaff4499a81d81a90d2db32bdf3fae37001d6fad11ba185a527f11"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "05_mustard_bottle.zip",
+      "name": "05_mustard_bottle.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/05_mustard_bottle.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "dde83d820d967d2b90e00439f2a4cf982efb6ce2b5a4a76c35bd717cc7cb5526"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "06_tuna_fish_can.zip",
+      "name": "06_tuna_fish_can.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/06_tuna_fish_can.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "ac64bd049384bf1129efdd6897693605af470b77ab814097505e80c2b95b4089"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "07_pudding_box.zip",
+      "name": "07_pudding_box.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/07_pudding_box.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "cd9486b9358bcd9e891d5468ecb1736424235d44227b0ed19a0041e896766e8a"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "08_gelatin_box.zip",
+      "name": "08_gelatin_box.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/08_gelatin_box.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "1110322d8d0a0da83ddcb9f616781525f4ed833ace65d8ba83871e711864e1a7"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "09_potted_meat_can.zip",
+      "name": "09_potted_meat_can.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/09_potted_meat_can.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "6c99789ec640047217de6bb0f65dc87e6b27f0fd4d4dcf2ccbf95496ee467653"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "10_banana.zip",
+      "name": "10_banana.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/10_banana.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "a3590714a92b1699c1e3bb30f2e34915db6f0f33f383016846eed6555e41f3c7"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "11_pitcher_base.zip",
+      "name": "11_pitcher_base.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/11_pitcher_base.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "fe3ec10880f6b4183c03dd30b88abb3f9ba4b8e8613c4c1778b9cb0721d33322"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "12_bleach_cleanser.zip",
+      "name": "12_bleach_cleanser.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/12_bleach_cleanser.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "8729bb96f5490a7cc2af7a8b9e674e19ad53c78eec2bb1995d1d74b2f33daf91"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "13_bowl.zip",
+      "name": "13_bowl.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/13_bowl.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "9f2021d777a4ef766f4bcd8447c37938229fcd11b65d18026f0eb10f6507016f"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "14_mug.zip",
+      "name": "14_mug.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/14_mug.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "f1ed70f6eef334ce771250a4dcf3f3d40e05a0e5248c956893a491511c44113e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "15_power_drill.zip",
+      "name": "15_power_drill.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/15_power_drill.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "c9678cdd2088a622139042ea2fcee237864e005a2cd3e90660ebd9d81d8ceea0"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "16_wood_block.zip",
+      "name": "16_wood_block.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/16_wood_block.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "d070d3addb9cc70163ad7383bf8c2d3f86d068f6e7c53aa1ae2a4802c558ed4c"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "17_scissors.zip",
+      "name": "17_scissors.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/17_scissors.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "751a986fb5ba0184e66974473cb8a64a84264f83c1e02b9e1bd49d69ebc4a98e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "18_large_marker.zip",
+      "name": "18_large_marker.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/18_large_marker.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "e449694406d0e56f71b3dc16d0a08a910a09d5b650c61e566b2861e99b5c0d89"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "19_large_clamp.zip",
+      "name": "19_large_clamp.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/19_large_clamp.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "3d54a8d51a60d749a2c7ab536cfdb20feeb8fba1092813e914d69e2db8189b98"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "20_extra_large_clamp.zip",
+      "name": "20_extra_large_clamp.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/20_extra_large_clamp.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "c73460174787b1b68de8e471e2fa7b02359c7feb1ec8323c2160ae3aa8852733"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "21_foam_brick.zip",
+      "name": "21_foam_brick.zip",
+      "contentUrl": "https://data.ciirc.cvut.cz/public/projects/2023BenchmarkPoseEstimationReconstructedMesh/Image_dataset/21_foam_brick.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "24f75be6f1e5ac0042b43fdf1b6ec86c348eb8b097354687bed76951a19339ff"
+    }
+  ]
+}
