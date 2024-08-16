@@ -1,7 +1,4 @@
-# Reconstruction and Pose Estimation Benchmark Dataset
-
-## [Website](https://varunburde.github.io/pose_estimation_benchmark.io/)
-## [arXiv](https://arxiv.org/abs/2408.08234)
+# Reconstruction and Pose Estimation Benchmark Dataset [Website](https://varunburde.github.io/pose_estimation_benchmark.io/)  [arXiv](https://arxiv.org/abs/2408.08234)
 
 ![setup.png](webpage_content%2Fsetup.png)
 
