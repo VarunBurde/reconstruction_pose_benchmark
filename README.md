@@ -1,5 +1,10 @@
 # Reconstruction and Pose Estimation Benchmark Dataset
-## [Website](https://varunburde.github.io/pose_estimation_benchmark.io/)   [arXiv](https://arxiv.org/abs/2408.08234)
+
+### [Publication (IEEE Xplore)](https://doi.org/10.1109/WACV61041.2025.00745) &nbsp;&nbsp; [Paper PDF (CVF)](https://openaccess.thecvf.com/content/WACV2025/papers/Burde_Comparative_Evaluation_of_3D_Reconstruction_Methods_for_Object_Pose_Estimation_WACV_2025_paper.pdf) &nbsp;&nbsp; [Website](https://varunburde.github.io/pose_estimation_benchmark.io/) &nbsp;&nbsp; [arXiv](https://arxiv.org/abs/2408.08234)
+
+Official dataset for **"Comparative Evaluation of 3D Reconstruction Methods for Object Pose
+Estimation"**, Varun Burde, Assia Benbihi, Pavel Burget, Torsten Sattler —
+IEEE/CVF Winter Conference on Applications of Computer Vision (**WACV**) 2025.
 
 ![setup.png](webpage_content%2Fsetup.png)
 
@@ -158,15 +163,30 @@ python3 -m scripts.nerf_to_colmap --dataset_dir <path to object image folder>
 python3 -m scripts.nerf_to_bop --dataset_dir <path to object image folder>
 ```
 
+## Citation
+
+If you use this dataset, please cite:
+
+```bibtex
+@InProceedings{Burde_2025_WACV,
+    author    = {Burde, Varun and Benbihi, Assia and Burget, Pavel and Sattler, Torsten},
+    title     = {Comparative Evaluation of 3D Reconstruction Methods for Object Pose Estimation},
+    booktitle = {Proceedings of the Winter Conference on Applications of Computer Vision (WACV)},
+    month     = {February},
+    year      = {2025},
+    pages     = {7658-7670}
+}
+```
+
 # License
 
 The YCB objects are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).
 
 This dataset is also released under Creative Commons Attribution 4.0 International (CC BY 4.0).
 
-If you use any of the above data in a publication, please consider citing the following papers:
+The dataset builds on the YCB object set; please also cite:
 
-```
+```bibtex
 @inproceedings{calli2015ycb,
   title={The ycb object and model set: Towards common benchmarks for manipulation research},
   author={Calli, Berk and Singh, Arjun and Walsman, Aaron and Srinivasa, Siddhartha and Abbeel, Pieter and Dollar, Aaron M},

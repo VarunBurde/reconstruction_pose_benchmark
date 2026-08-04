@@ -48,7 +48,7 @@
   "name": "RecPose",
   "description": "Calibrated Images for 3D Reconstructions of YCB-V for Pose Estimation and 3D Reconstructions of YCB-V objects from RGB Images",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
-  "citeAs": "@article{Burde2024Comp, author={Burde, Varun and Benbihi,Assia and Burget, Pavel and Sattler, Torsten},title={{Comparative Evaluation of 3D Reconstruction Methods forObject Pose Estimation}}, year = {2024} }",
+  "citeAs": "@InProceedings{Burde_2025_WACV, author = {Burde, Varun and Benbihi, Assia and Burget, Pavel and Sattler, Torsten}, title = {Comparative Evaluation of 3D Reconstruction Methods for Object Pose Estimation}, booktitle = {Proceedings of the Winter Conference on Applications of Computer Vision (WACV)}, month = {February}, year = {2025}, pages = {7658-7670}, doi = {10.1109/WACV61041.2025.00745} }",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://github.com/VarunBurde/reconstruction_pose_benchmark",
   "distribution": [
